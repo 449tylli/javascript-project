@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculatrice</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: #1a1a2e;
+      font-family: Arial, sans-serif;
+    }
+
+    .calculator {
+      background: #16213e;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      width: 280px;
+    }
+
+    .display {
+      background: #0f3460;
+      color: #e0e0e0;
+      text-align: right;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 2rem;
+      margin-bottom: 16px;
+      min-height: 60px;
+      word-break: break-all;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    button {
+      padding: 18px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.1s, opacity 0.1s;
+    }
+
+    button:active {
+      transform: scale(0.95);
+      opacity: 0.8;
+    }
+
+    .btn-number {
+      background: #533483;
+      color: white;
+    }
+
+    .btn-operator {
+      background: #e94560;
+      color: white;
+    }
+
+    .btn-equal {
+      background: #0f3460;
+      color: white;
+      grid-column: span 2;
+    }
+
+    .btn-clear {
+      background: #e94560;
+      color: white;
+      grid-column: span 2;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <div class="display" id="display">0</div>
+    <div class="buttons">
+      <button class="btn-clear" onclick="clearDisplay()">C</button>
+      <button class="btn-operator" onclick="appendToDisplay('/')">÷</button>
+      <button class="btn-operator" onclick="appendToDisplay('*')">×</button>
+
+      <button class="btn-number" onclick="appendToDisplay('7')">7</button>
+      <button class="btn-number" onclick="appendToDisplay('8')">8</button>
+      <button class="btn-number" onclick="appendToDisplay('9')">9</button>
+      <button class="btn-operator" onclick="appendToDisplay('-')">−</button>
+
+      <button class="btn-number" onclick="appendToDisplay('4')">4</button>
+      <button class="btn-number" onclick="appendToDisplay('5')">5</button>
+      <button class="btn-number" onclick="appendToDisplay('6')">6</button>
+      <button class="btn-operator" onclick="appendToDisplay('+')">+</button>
+
+      <button class="btn-number" onclick="appendToDisplay('1')">1</button>
+      <button class="btn-number" onclick="appendToDisplay('2')">2</button>
+      <button class="btn-number" onclick="appendToDisplay('3')">3</button>
+      <button class="btn-number" onclick="appendToDisplay('0')">0</button>
+
+      <button class="btn-number" onclick="appendToDisplay('.')">.</button>
+      <button class="btn-equal" onclick="calculate()">=</button>
+    </div>
+  </div>
+
+  <script>
+    let display = document.getElementById("display");
+    let currentInput = "";
+
+    function appendToDisplay(value) {
+      if (currentInput === "" && isNaN(value)) return;
+      currentInput += value;
+      display.textContent = currentInput;
+    }
+
+    function clearDisplay() {
+      currentInput = "";
+      display.textContent = "0";
+    }
+
+    function calculate() {
+      if (currentInput === "") return;
+      try {
+        let result = Function('"use strict"; return (' + currentInput + ')')();
+        if (!isFinite(result)) {
+          display.textContent = "Erreur";
+        } else {
+          display.textContent = result;
+        }
+        currentInput = String(result);
+      } catch {
+        display.textContent = "Erreur";
+        currentInput = "";
+      }
+    }
+  </script>
+</body>
+</html>
